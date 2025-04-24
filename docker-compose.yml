@@ -10,7 +10,7 @@ services:
       MYSQL_DATABASE: ChatbotDB
       TZ: Asia/Taipei
     ports:
-      - "3306:3306"
+      - "3307:3306"
     volumes:
       - mysql_data:/var/lib/mysql
       - ./db/chatbot_init.sql:/docker-entrypoint-initdb.d/1_init.sql
