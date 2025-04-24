@@ -26,7 +26,7 @@ if (-not (Test-Path '.\backend\.env')) {
 Write-Host 'If Ollama not running, execute in another terminal:' -ForegroundColor Yellow
 Write-Host '  ollama serve --listen 0.0.0.0:11434' -ForegroundColor Yellow
 
-# 7. Start Docker Compose Start Docker Compose
+# 7. Start Docker Compose
 docker compose down | Out-Null
 docker compose up -d --build | Out-Null
 
