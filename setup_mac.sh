@@ -1,3 +1,4 @@
+# 1. Install Homebrew if missing
 if ! command -v brew >/dev/null 2>&1; then
   echo "Homebrew not found. Installing Homebrew..."
   /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
@@ -24,10 +25,14 @@ if ! command -v docker >/dev/null 2>&1; then
   exit 1
 fi
 
-# 5. Clone repo into ~/chatbot-project if not exists
+# 5. Clone or update repo to ~/chatbot-project
 TARGET="$HOME/chatbot-project"
 if [ ! -d "$TARGET" ]; then
   git clone https://github.com/qazasd2518995/chatbot-project.git "$TARGET"
+else
+  cd "$TARGET"
+  echo "Updating existing repository..."
+  git pull origin main
 fi
 cd "$TARGET"
 
