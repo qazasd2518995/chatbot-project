@@ -32,7 +32,7 @@ services:
 
   frontend:
     build: ./frontend
-    container_name: chatbot-frontend
+    container_name: frontend
     ports:
       - "5173:80"
     depends_on:
