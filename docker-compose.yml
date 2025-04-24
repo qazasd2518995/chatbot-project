@@ -13,6 +13,7 @@ services:
       - mysql_data:/var/lib/mysql
       - ./db/chatbot_init.sql:/docker-entrypoint-initdb.d/1_init.sql
 
+  services:
   backend:
     build: ./backend
     container_name: chatbot-backend
@@ -21,11 +22,16 @@ services:
       DB_USER: root
       DB_PASSWORD: rootpw
       DB_NAME: ChatbotDB
-    ports: ['3001:3001']
-    depends_on: [mysql]
+      PORT: 3000
+      OLLAMA_URL: http://host.docker.internal:11434/api/generate
+    ports:
+      - "3001:3000"
+    depends_on:
+      - mysql
+
 
   frontend:
-    build: ./frontend
+    build: ./chatbot-frontend
     container_name: chatbot-frontend
     ports: ['5173:80']
     depends_on: [backend]
