@@ -36,8 +36,8 @@ if (-not (Test-Path '.\backend\.env')) {
 }
 
 # 6. Prompt for Ollama service
-Write-Host 'If Ollama not running, execute in another terminal:' -ForegroundColor Yellow
-Write-Host '  ollama serve --listen 0.0.0.0:11434' -ForegroundColor Yellow
+Write-Host "If Ollama is not running, open a new PowerShell window and run:" -ForegroundColor Yellow
+Write-Host "  ollama serve --listen 0.0.0.0:11434" -ForegroundColor Yellow
 
  
 # --- sanity check: Docker Desktop running? ---
