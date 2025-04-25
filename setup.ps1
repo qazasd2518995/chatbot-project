@@ -57,3 +57,4 @@ Write-Host 'All set! Opening web UI at http://localhost:5173' -ForegroundColor G
 
 # 9. 開啟瀏覽器
 Start-Process http://localhost:5173
+
