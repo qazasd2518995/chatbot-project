@@ -16,6 +16,7 @@ if (-not (Get-Command winget -ErrorAction SilentlyContinue)) {
 
 # 3. Install Git if missing
 if (-not (Get-Command git -ErrorAction SilentlyContinue)) {
+    Write-Host 'Installing Git via WinGet…' -ForegroundColor Cyan
     winget install --id Git.Git -e --source winget --accept-source-agreements --accept-package-agreements | Out-Null
 }
 
@@ -38,16 +39,19 @@ if (-not (Test-Path '.\backend\.env')) {
 # 6. Prompt for Ollama service
 Write-Host 'If Ollama is not running, open a new PowerShell window and run:' -ForegroundColor Yellow
 Write-Host '  ollama serve --listen 0.0.0.0:11434' -ForegroundColor Yellow
+
 # --- sanity check: Docker Desktop running? ---
-if (-not (Get-Process -Name "com.docker.backend" -ErrorAction SilentlyContinue)) {
-    Write-Host "Docker Desktop 未執行，請先啟動後再執行腳本。" -ForegroundColor Red
+if (-not (Get-Process -Name 'com.docker.backend' -ErrorAction SilentlyContinue)) {
+    Write-Host 'Docker Desktop 未執行，請先啟動後再執行腳本。' -ForegroundColor Red
     exit 1
 }
 
 # 7. Start Docker Compose
+Write-Host 'Bringing down any existing containers...' -ForegroundColor Cyan
 docker compose down | Out-Null
+Write-Host 'Building and starting containers...' -ForegroundColor Cyan
 docker compose up -d --build | Out-Null
-Write-Host "Docker containers are up and running! Opening the web UI…" -ForegroundColor Green
+Write-Host 'Docker containers are up and running! Opening the web UI…' -ForegroundColor Green
 
 # 8. Open browser
 Start-Process http://localhost:5173
