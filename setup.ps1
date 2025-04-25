@@ -42,7 +42,8 @@ Write-Host 'If Ollama is not running, open a new PowerShell window and run:' -Fo
 Write-Host '  ollama serve --listen 0.0.0.0:11434' -ForegroundColor Yellow
 
 # 7. 检查 Docker Desktop 是否在运行
-if (-not (Get-Process -Name 'com.docker.backend' -ErrorAction SilentlyContinue)) {
+if (-not (Get-Process -Name 'com.docker.backend' -ErrorAction SilentlyContinue))
+{
     Write-Host 'Docker Desktop 未启动，请先启动 Docker Desktop，然后再运行本脚本。' -ForegroundColor Red
     exit 1 }
 
