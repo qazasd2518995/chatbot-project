@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Chatbot Project 安裝程序</title>
+    <meta charset="UTF-8">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            color: #333;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 20px;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        pre {
+            background-color: #f8f8f8;
+            padding: 15px;
+            border-left: 4px solid #4CAF50;
+            overflow-x: auto;
+        }
+        .note {
+            background-color: #fff3cd;
+            padding: 15px;
+            border-left: 4px solid #ffc107;
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Chatbot Project 安裝程序</h1>
+        
+        <p>點擊下方按鈕開始安裝 Chatbot Project。安裝過程將：</p>
+        <ul>
+            <li>設置必要的 PowerShell 環境</li>
+            <li>安裝必要的工具和依賴（如 Git）</li>
+            <li>下載專案源代碼</li>
+            <li>設置環境檔案</li>
+            <li>啟動 Docker 容器</li>
+        </ul>
+        
+        <div class="note">
+            <strong>注意：</strong> 請確保您已經安裝了 Docker Desktop 並且已啟動。
+        </div>
+        
+        <button onclick="runInstaller()">開始安裝</button>
+        
+        <h2>手動安裝步驟</h2>
+        <p>如果自動安裝無法正常工作，您可以使用以下手動步驟：</p>
+        <pre>
+# 步驟 1: 在 PowerShell 中執行 (以管理員身份)
+Set-ExecutionPolicy Bypass -Scope Process -Force
+
+# 步驟 2: 下載安裝腳本
+Invoke-WebRequest -Uri "https://raw.githubusercontent.com/qazasd2518995/chatbot-project/main/setup.ps1" -OutFile "$env:TEMP\setup.ps1"
+
+# 步驟 3: 執行安裝腳本
+PowerShell -ExecutionPolicy Bypass "$env:TEMP\setup.ps1"
+        </pre>
+    </div>
+
+    <script>
+        function runInstaller() {
+            if (navigator.userAgent.indexOf("Windows") !== -1) {
+                // Windows 系統
+                var command = 'powershell.exe -Command "Set-ExecutionPolicy Bypass -Scope Process -Force; [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; $env:TEMP = [System.IO.Path]::GetTempPath(); Invoke-WebRequest -UseBasicParsing -Uri \'https://raw.githubusercontent.com/qazasd2518995/chatbot-project/main/setup.ps1\' -OutFile \\"$env:TEMP\\setup.ps1\\"; PowerShell -ExecutionPolicy Bypass \\"$env:TEMP\\setup.ps1\\""';
+                
+                var link = document.createElement('a');
+                link.href = "data:application/bat;charset=utf-8," + encodeURIComponent("@echo off\n" + command);
+                link.download = "install_chatbot.bat";
+                link.style.display = "none";
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+                
+                alert("下載安裝檔案已完成。請運行下載的 install_chatbot.bat 檔案來安裝 Chatbot Project。");
+            } else if (navigator.userAgent.indexOf("Mac") !== -1) {
+                // macOS 系統
+                var macCommand = 'curl -s https://raw.githubusercontent.com/qazasd2518995/chatbot-project/main/setup_mac.sh | bash';
+                
+                var link = document.createElement('a');
+                link.href = "data:application/sh;charset=utf-8," + encodeURIComponent("#!/bin/bash\n" + macCommand);
+                link.download = "install_chatbot.sh";
+                link.style.display = "none";
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+                
+                alert("下載安裝檔案已完成。請打開終端機，進入下載文件夾，並執行以下命令來安裝 Chatbot Project：\n\nchmod +x install_chatbot.sh && ./install_chatbot.sh");
+            } else {
+                // 其他系統
+                alert("無法自動檢測您的操作系統。請使用頁面上的手動安裝步驟。");
+            }
+        }
+    </script>
+</body>
+</html>
