@@ -25,6 +25,13 @@ if ! command -v docker >/dev/null 2>&1; then
   exit 1
 fi
 
+# 4b. Ensure Docker Desktop daemon is running
+if ! docker system info >/dev/null 2>&1; then
+  echo "Docker Desktop appears to be installed but not running."
+  echo "Please start Docker Desktop, wait until it reports \"Docker is running\", then re‑run this script."
+  exit 1
+fi
+
 # 5. Clone or update repo to ~/chatbot-project
 TARGET="$HOME/chatbot-project"
 if [ ! -d "$TARGET" ]; then

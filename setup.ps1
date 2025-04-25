@@ -1,10 +1,18 @@
+# 建議加在最上方：早期 Windows PowerShell 會把 TLS 1.0 預設給 PSGallery
+[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
+
 Set-ExecutionPolicy Bypass -Scope Process -Force
 
 # 2. Silent install WinGet module
-$progressPreference = 'silentlyContinue'
-Install-PackageProvider -Name NuGet -Force | Out-Null
-Install-Module -Name Microsoft.WinGet.Client -Force -Repository PSGallery | Out-Null
-Repair-WinGetPackageManager | Out-Null
+if (-not (Get-Command winget -ErrorAction SilentlyContinue)) {
+    Write-Host 'Installing WinGet PowerShell module…' -ForegroundColor Cyan
+    Install-PackageProvider -Name NuGet -Force | Out-Null
+    if (-not (Get-Module -ListAvailable Microsoft.WinGet.Client)) {
+        Install-Module Microsoft.WinGet.Client -Force -Repository PSGallery | Out-Null
+    }
+    Import-Module Microsoft.WinGet.Client -Force
+    Repair-WinGetPackageManager | Out-Null
+}
 
 # 3. Install Git if missing
 if (-not (Get-Command git -ErrorAction SilentlyContinue)) {
@@ -30,6 +38,13 @@ if (-not (Test-Path '.\backend\.env')) {
 # 6. Prompt for Ollama service
 Write-Host 'If Ollama not running, execute in another terminal:' -ForegroundColor Yellow
 Write-Host '  ollama serve --listen 0.0.0.0:11434' -ForegroundColor Yellow
+
+ 
+# --- sanity check: Docker Desktop running? ---
+if (-not (Get-Process -Name "com.docker.backend" -ErrorAction SilentlyContinue)) {
+    Write-Host "Docker Desktop 未執行，請先啟動後再執行腳本。" -ForegroundColor Red
+    exit 1
+}
 
 # 7. Start Docker Compose
 docker compose down | Out-Null
