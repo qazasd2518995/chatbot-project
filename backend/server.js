@@ -19,8 +19,8 @@ app.use(bodyParser.json());
 const pool = mysql.createPool({
   host:     process.env.DB_HOST     || 'localhost',
   user:     process.env.DB_USER     || 'root',
-  password: process.env.DB_PASSWORD || '',
-  database: process.env.DB_NAME     || 'chatbot_db',
+  password: process.env.DB_PASSWORD || 'rootpw',  // 使用與docker-compose相同的預設密碼
+  database: process.env.DB_NAME     || 'ChatbotDB',  // 修改為與 SQL 初始化腳本匹配
   waitForConnections: true,
   connectionLimit:   10,
   charset:   'utf8mb4'
@@ -66,6 +66,9 @@ router.post('/register', async (req, res) => {
     return res.status(400).json({ message: '請提供 username 和 password' });
   }
   try {
+    console.log('嘗試註冊用戶:', username); // 添加日誌
+
+    // 檢查用戶是否已存在
     const [rows] = await pool.query(
       'SELECT id FROM Users WHERE username = ?',
       [username]
@@ -73,14 +76,22 @@ router.post('/register', async (req, res) => {
     if (rows.length) {
       return res.status(400).json({ message: '使用者已存在' });
     }
+
+    // 生成密碼哈希
     const hash = await bcrypt.hash(password, 10);
+    
+    console.log('插入新用戶到資料庫'); // 添加日誌
+    
+    // 插入新用戶
     await pool.query(
       'INSERT INTO Users (username, password_hash, created_at) VALUES (?, ?, NOW())',
       [username, hash]
     );
+    
+    console.log('註冊成功:', username); // 添加日誌
     res.status(201).json({ message: '註冊成功' });
   } catch (err) {
-    console.error(err);
+    console.error('註冊過程中發生錯誤:', err);
     res.status(500).json({ message: '伺服器錯誤' });
   }
 });
@@ -148,4 +159,5 @@ app.use('/api', router);
 // --- Start server ---
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
+  console.log(`Using database: ${process.env.DB_NAME || 'ChatbotDB'}`);
 });
