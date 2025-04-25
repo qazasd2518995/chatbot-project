@@ -1,5 +1,4 @@
-# 建议加在最上方：启用 TLS 1.2，以便能从 PSGallery 下载模块
-[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
+
 
 # 1. 允许脚本执行
 Set-ExecutionPolicy Bypass -Scope Process -Force
@@ -45,8 +44,7 @@ Write-Host '  ollama serve --listen 0.0.0.0:11434' -ForegroundColor Yellow
 # 7. 检查 Docker Desktop 是否在运行
 if (-not (Get-Process -Name 'com.docker.backend' -ErrorAction SilentlyContinue)) {
     Write-Host 'Docker Desktop 未启动，请先启动 Docker Desktop，然后再运行本脚本。' -ForegroundColor Red
-    exit 1
-}
+    exit 1 }
 
 # 8. 启动 Docker Compose
 Write-Host 'Stopping existing containers…' -ForegroundColor Cyan
