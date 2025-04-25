@@ -43,8 +43,7 @@ Write-Host '  ollama serve --listen 0.0.0.0:11434' -ForegroundColor Yellow
 # --- sanity check: Docker Desktop running? ---
 if (-not (Get-Process -Name 'com.docker.backend' -ErrorAction SilentlyContinue)) {
     Write-Host 'Docker Desktop 未執行，請先啟動後再執行腳本。' -ForegroundColor Red
-    exit 1
-}
+    exit 1 }
 
 # 7. Start Docker Compose
 Write-Host 'Bringing down any existing containers...' -ForegroundColor Cyan
