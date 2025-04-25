@@ -4,7 +4,7 @@ WORKDIR /app
 COPY package*.json ./
 RUN npm install
 COPY . .
-RUN npm run build          # Vite 產物在 dist/，CRA 在 build/
+RUN npm run build         
 
 # ---------- Runtime stage ----------
 FROM nginx:1.27-alpine
