@@ -15,10 +15,10 @@ services:
       - mysql_data:/var/lib/mysql
       - ./db/chatbot_init.sql:/docker-entrypoint-initdb.d/1_init.sql
     healthcheck:
-    test: ["CMD", "mysqladmin", "ping", "-prootpw"]
-    interval: 10s
-    timeout: 5s
-    retries: 5
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-prootpw"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
   backend:
     build: ./backend
