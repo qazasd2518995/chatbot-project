@@ -7,7 +7,6 @@ Install-Module -Name Microsoft.WinGet.Client -Force -Repository PSGallery | Out-
 Repair-WinGetPackageManager | Out-Null
 
 # 3. Install Git if missing
-display Name for Git install
 if (-not (Get-Command git -ErrorAction SilentlyContinue)) {
     winget install --id Git.Git -e --source winget --accept-source-agreements --accept-package-agreements | Out-Null
 }
