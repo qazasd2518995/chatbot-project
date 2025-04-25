@@ -6,7 +6,7 @@ Set-ExecutionPolicy Bypass -Scope Process -Force
 
 # 2. 靜默安裝 WinGet 模組（如尚未安裝）
 if (-not (Get-Command winget -ErrorAction SilentlyContinue)) {
-    Write-Host 'Installing WinGet PowerShell module…' -ForegroundColor Cyan
+    Write-Host 'Installing WinGet PowerShell module...' -ForegroundColor Cyan
     Install-PackageProvider -Name NuGet -Force | Out-Null
     if (-not (Get-Module -ListAvailable Microsoft.WinGet.Client)) {
         Install-Module Microsoft.WinGet.Client -Force -Repository PSGallery | Out-Null
@@ -17,17 +17,17 @@ if (-not (Get-Command winget -ErrorAction SilentlyContinue)) {
 
 # 3. 安裝 Git（如尚未安裝）
 if (-not (Get-Command git -ErrorAction SilentlyContinue)) {
-    Write-Host 'Installing Git via WinGet…' -ForegroundColor Cyan
+    Write-Host 'Installing Git via WinGet...' -ForegroundColor Cyan
     winget install --id Git.Git -e --source winget --accept-source-agreements --accept-package-agreements | Out-Null
 }
 
 # 4. Clone 或更新專案至使用者目錄
 $target = Join-Path $HOME 'chatbot-project'
 if (-not (Test-Path $target)) {
-    Write-Host "Cloning repository to $target…" -ForegroundColor Cyan
+    Write-Host "Cloning repository to $target..." -ForegroundColor Cyan
     git clone https://github.com/qazasd2518995/chatbot-project.git $target
 } else {
-    Write-Host "Updating existing repository in $target…" -ForegroundColor Cyan
+    Write-Host "Updating existing repository in $target..." -ForegroundColor Cyan
     Set-Location $target
     git pull origin main
 }
@@ -49,9 +49,9 @@ if (-not (Get-Process -Name 'com.docker.backend' -ErrorAction SilentlyContinue))
 }
 
 # 8. 啟動 Docker Compose
-Write-Host 'Stopping existing containers…' -ForegroundColor Cyan
+Write-Host 'Stopping existing containers...' -ForegroundColor Cyan
 docker compose down | Out-Null
-Write-Host 'Building and starting containers…' -ForegroundColor Cyan
+Write-Host 'Building and starting containers...' -ForegroundColor Cyan
 docker compose up -d --build | Out-Null
 Write-Host 'All set! Opening web UI at http://localhost:5173' -ForegroundColor Green
 
