@@ -1,0 +1,3 @@
+@echo off
+echo 開始安裝 Chatbot Project...
+powershell -ExecutionPolicy Bypass -Command "iwr -useb https://raw.githubusercontent.com/qazasd2518995/chatbot-project/main/setup.ps1 -OutFile %TEMP%\setup.ps1 && powershell -ExecutionPolicy Bypass %TEMP%\setup.ps1"
